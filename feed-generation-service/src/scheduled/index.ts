@@ -23,7 +23,12 @@ export const initScheduledJobs = (redis: Redis) => {
 
       ;(users as User[]).forEach(async (user) => {
         const feed = await generateFeed()
-        await redis.set(`${user.id}-feed`, JSON.stringify(feed), "EX", 300)
+        await redis.set(
+          `${user.id}-feed`,
+          JSON.stringify(feed),
+          "EX",
+          Number(feedGenerationMinutes) * 60
+        )
       })
     }
   )
