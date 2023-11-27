@@ -20,7 +20,7 @@ docker build -t write-api .
 docker build -t feed-generation-service .
 ```
 
-From the `root` folder run the follow docker-compose command.
+From the `root` folder run the following docker-compose command.
 
 ```bash
 docker compose up
@@ -29,11 +29,11 @@ docker compose up
 From the `client` folder run the following commands, and open the client on [http://localhost:3000](http://localhost:3000)
 
 ```bash
-npm build
+npm install
 or
-yarn build
+yarn install
 or
-pnpm build
+pnpm install
 
 npm dev
 or
