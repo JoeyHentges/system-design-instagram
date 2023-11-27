@@ -1,5 +1,7 @@
 # System Design - Instagram
 
+![system design diagram](diagram.png "Instagram System Design Diagram")
+
 <b>NOTE:</b>
 <i>None of this code is error tested and should not be replicated as is in a production environment. It is purely to check the functionality of this system design.</i>
 
