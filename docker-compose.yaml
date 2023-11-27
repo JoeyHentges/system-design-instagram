@@ -1,0 +1,78 @@
+version: "3"
+
+services:
+  loadbalancer:
+    image: haproxy
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "1936:1936"
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy
+
+  cache:
+    image: redis
+
+  database:
+    image: mysql
+    command: --default-authentication-plugin=caching_sha2_password
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=db
+    volumes:
+      - ./mysql:/docker-entrypoint-initdb.d
+
+  readapi1:
+    image: read-api
+    environment:
+      - PORT=8080
+      - APP_ID=readapi1111
+      - FEED_GENERATION_API_URL=feedgenerationservice:8082
+      - REDIS_URI=redis://cache:6379
+      - MYSQL_URI=mysql://root:root@database:3306/db
+  readapi2:
+    image: read-api
+    environment:
+      - PORT=8080
+      - APP_ID=readapi2222
+      - FEED_GENERATION_API_URL=feedgenerationservice:8082
+      - REDIS_URI=redis://cache:6379
+      - MYSQL_URI=mysql://root:root@database:3306/db
+  readapi3:
+    image: read-api
+    environment:
+      - PORT=8080
+      - APP_ID=readapi3333
+      - FEED_GENERATION_API_URL=feedgenerationservice:8082
+      - REDIS_URI=redis://cache:6379
+      - MYSQL_URI=mysql://root:root@database:3306/db
+  readapi4:
+    image: read-api
+    environment:
+      - PORT=8080
+      - APP_ID=readapi4444
+      - FEED_GENERATION_API_URL=feedgenerationservice:8082
+      - REDIS_URI=redis://cache:6379
+      - MYSQL_URI=mysql://root:root@database:3306/db
+
+  writeapi1:
+    image: write-api
+    environment:
+      - PORT=8081
+      - APP_ID=writeapi1111
+      - MYSQL_URI=mysql://root:root@database:3306/db
+  writeapi2:
+    image: write-api
+    environment:
+      - PORT=8081
+      - APP_ID=writeapi2222
+      - MYSQL_URI=mysql://root:root@database:3306/db
+
+  feedgenerationservice:
+    image: feed-generation-service
+    environment:
+      - PORT=8082
+      - APP_ID=feedgenerationservice1111
+      - REDIS_URI=redis://cache:6379
+      - MYSQL_URI=mysql://root:root@database:3306/db
+      - FEED_GENERATION_MINUTES=5
